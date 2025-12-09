@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Kim : CharacterController
@@ -10,6 +8,11 @@ public class Kim : CharacterController
     public override void StartCharacter()
     {
         base.StartCharacter();
+
+        for (int i = 0; i < 5; i++)
+        {
+            myWalkBuffer.Add(Grid.Instance.TryGetTile(new Vector2Int(myCurrentTile.x + i, myCurrentTile.y)));
+        }
     }
 
     public override void UpdateCharacter()
