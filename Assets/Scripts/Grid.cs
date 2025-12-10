@@ -56,6 +56,8 @@ public class Grid : MonoBehaviour
         public int x, y = 0;
         public bool occupied = false;
         public bool finishTile = false;
+        
+        public Vector2Int Coord => new(x, y);
     }
 
     public List<Tile> tiles = new List<Tile>();
