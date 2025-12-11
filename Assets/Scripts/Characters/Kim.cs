@@ -1,21 +1,21 @@
-using System;
 using System.Collections.Generic;
-using DefaultNamespace;
+using System.Linq;
 using UnityEngine;
 
 public class Kim : CharacterController
 {
     [SerializeField] float ContextRadius;
 
-    private List<Grid.Tile> path = new();
-    
+    private List<Burger> burgers = new();
+
     public override void StartCharacter()
     {
         base.StartCharacter();
 
         Grid.Tile start = Grid.Instance.GetClosest(transform.position);
-        path = Pathfinding.GetPath(Grid.Instance.tiles, start, Grid.Instance.GetFinishTile());
 
+        List<Grid.Tile> path = GetComponent<PathfindingV2>().GetPath(start, new List<Grid.Tile> { Grid.Instance.GetFinishTile() });
+        
         myWalkBuffer.AddRange(path);
     }
 
@@ -59,16 +59,5 @@ public class Kim : CharacterController
             }
         }
         return Closest;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (path.Count == 0) return;
-
-        foreach (Grid.Tile tile in path)
-        {
-            Gizmos.color = Color.chartreuse;
-            Gizmos.DrawCube(Grid.Instance.WorldPos(tile), Vector3.one * 0.3f);
-        }
     }
 }

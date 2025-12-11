@@ -46,6 +46,12 @@ public class Grid : MonoBehaviour
     [Range(0.0f, 1.0f)]
     [SerializeField] float AlphaTileSize;
 
+    [SerializeField] private Color TileColorDefault = new(0.5f, 0.55f, 0.55f);
+    [SerializeField] private Color TileColorOccupied = new(0.75f, 0.22f, 0.17f);
+    [SerializeField] private Color TileColorFree = new(0.2f, 0.29f, 0.37f);
+    [SerializeField] private Color TileColorGoal = new(0.16f, 0.5f, 0.73f);
+    
+
     public bool GeneratedGrid = false;
 
     [SerializeField] Transform FinishTileTrans = null;
@@ -186,10 +192,10 @@ public class Grid : MonoBehaviour
         {
             foreach (Tile t in tiles)
             {
-                if (t.occupied) Gizmos.color = Color.red; else Gizmos.color = Color.green;
-                if (t.finishTile) Gizmos.color = Color.blue;
+                if (t.occupied) Gizmos.color = TileColorOccupied; else Gizmos.color = TileColorFree;
+                if (t.finishTile) Gizmos.color = TileColorGoal;
 
-                AlphaColor();
+                // AlphaColor();
                 Vector3 cubeSize = new Vector3(Spacing * VisualTileSize, 0.1f, Spacing * VisualTileSize);
 
 
@@ -198,7 +204,14 @@ public class Grid : MonoBehaviour
                 cubePos.x = (t.x * Spacing) + Spacing / 2.0f;
                 cubePos.z = (t.y * Spacing) + Spacing / 2.0f;
 
-                Gizmos.DrawWireCube(cubePos + OffsetPos(), cubeSize);
+                if (t.occupied)
+                {
+                    Gizmos.DrawCube(cubePos + OffsetPos(), cubeSize);
+                }
+                else
+                {
+                    Gizmos.DrawWireCube(cubePos + OffsetPos(), cubeSize);
+                }
             }
         }
         else
@@ -207,8 +220,8 @@ public class Grid : MonoBehaviour
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    Gizmos.color = Color.yellow;
-                    AlphaColor();
+                    Gizmos.color = TileColorDefault;
+                    // AlphaColor();
 
                     Vector3 cubeSize = new Vector3(Spacing * VisualTileSize, 0.1f, Spacing * VisualTileSize);
                     Vector3 cubePos = new Vector3();

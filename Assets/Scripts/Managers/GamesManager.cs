@@ -40,7 +40,7 @@ public class GamesManager : StateMachine
     private void Start()
     {
         InitializeStateMachine();
-        BurgerCount = FindObjectsOfType<Burger>().Length;
+        BurgerCount = FindObjectsByType<Burger>(FindObjectsSortMode.None).Length;
         if (!SkipIntro)
         {
             ChangeState<IntroState>();

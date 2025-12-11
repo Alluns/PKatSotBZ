@@ -35,8 +35,8 @@ public class PlayingState : State
     {
         PlayingUI.gameObject.SetActive(false);
         controllerList = new List<CharacterController>();
-        controllerList = FindObjectsOfType<CharacterController>(true).ToList();
-        burgerList = FindObjectsOfType<Burger>(true).ToList();
+        controllerList = FindObjectsByType<CharacterController>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        burgerList = FindObjectsByType<Burger>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
     }
     public override void EnterState()
     {
