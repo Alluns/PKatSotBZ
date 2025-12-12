@@ -46,11 +46,14 @@ public class Grid : MonoBehaviour
     [Range(0.0f, 1.0f)]
     [SerializeField] float AlphaTileSize;
 
+    #region Colors
+
     [SerializeField] private Color TileColorDefault = new(0.5f, 0.55f, 0.55f);
     [SerializeField] private Color TileColorOccupied = new(0.75f, 0.22f, 0.17f);
     [SerializeField] private Color TileColorFree = new(0.2f, 0.29f, 0.37f);
     [SerializeField] private Color TileColorGoal = new(0.16f, 0.5f, 0.73f);
-    
+
+    #endregion
 
     public bool GeneratedGrid = false;
 

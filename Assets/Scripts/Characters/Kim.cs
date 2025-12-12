@@ -1,12 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Kim : CharacterController
 {
     [SerializeField] float ContextRadius;
-
-    private List<Burger> burgers = new();
 
     public override void StartCharacter()
     {

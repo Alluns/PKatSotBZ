@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 
 public class PathfindingV2 : MonoBehaviour
 {
@@ -11,12 +9,16 @@ public class PathfindingV2 : MonoBehaviour
     private readonly List<WeightedTile> openTiles = new();
     private readonly List<WeightedTile> closedTiles = new();
     private readonly List<Grid.Tile> completedPath = new();
-    
+
+    #region Colors
+
     [SerializeField] private Color pathColor = new(0.09f, 0.63f, 0.52f);
     [SerializeField] private Color defaultColor = new(0.95f, 0.61f, 0.07f);
     [SerializeField] private Color dangerColor = new(0.75f, 0.22f, 0.17f);
     [SerializeField] private Color relationshipColor = new(0.17f, 0.24f, 0.31f);
 
+    #endregion
+    
     [SerializeField] private float dangerSearchRadius = 2.5f;
     [SerializeField] private float dangerCostMultiplier = 2.5f;
     
@@ -25,7 +27,7 @@ public class PathfindingV2 : MonoBehaviour
         public Grid.Tile tile;
         public WeightedTile parent = null;
 
-        public float travelCost = float.PositiveInfinity;           // Best calculated path to the tile
+        public float travelCost = float.PositiveInfinity;           // Best path to tile
         public float heuristicCost = float.PositiveInfinity;        // Estimated cost to the goal
         public float dangerCost = 0f;                               // Danger cost of the tile
                 
@@ -64,7 +66,7 @@ public class PathfindingV2 : MonoBehaviour
                 return completedPath;
             }
             
-            for (int x = -1; x < 2; x++)
+            for (int x = -1; x < 2; x++)            // Replace with tile.GetNeighbours()
             {
                 for (int y = -1; y < 2; y++)
                 {
@@ -106,7 +108,7 @@ public class PathfindingV2 : MonoBehaviour
     private float GetDangerCost(Vector3 worldPos)
     {
         Collider[] context = Physics.OverlapSphere(worldPos, dangerSearchRadius);
-        List<GameObject> zombies = new List<GameObject>();
+        List<GameObject> zombies = new();
         foreach (Collider c in context)
         {
             if (c.transform.CompareTag("Zombie"))
@@ -128,7 +130,7 @@ public class PathfindingV2 : MonoBehaviour
         {
             foreach (WeightedTile weightedTile in openTiles)
             {
-                Gizmos.color = Color.Lerp(defaultColor, dangerColor, weightedTile.dangerCost / dangerSearchRadius * dangerCostMultiplier);
+                Gizmos.color = Color.Lerp(defaultColor, dangerColor, weightedTile.dangerCost / (dangerSearchRadius * dangerCostMultiplier));
                 Gizmos.DrawCube(Grid.Instance.WorldPos(weightedTile.tile), Vector3.one * 0.125f);
 
                 if (weightedTile.parent == null) continue;
@@ -142,7 +144,7 @@ public class PathfindingV2 : MonoBehaviour
         {
             foreach (WeightedTile weightedTile in closedTiles)
             {
-                Gizmos.color = Color.Lerp(defaultColor, dangerColor, weightedTile.dangerCost / dangerSearchRadius * dangerCostMultiplier);
+                Gizmos.color = Color.Lerp(defaultColor, dangerColor, weightedTile.dangerCost / (dangerSearchRadius * dangerCostMultiplier));
                 Gizmos.DrawCube(Grid.Instance.WorldPos(weightedTile.tile), Vector3.one * 0.125f);
 
                 if (weightedTile.parent == null) continue;
